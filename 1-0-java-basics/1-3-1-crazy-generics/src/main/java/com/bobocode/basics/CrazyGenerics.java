@@ -138,18 +138,9 @@ public class CrazyGenerics {
      * @param <E> a type of collection elements
      */
     interface ComparableCollection<E> extends Collection<E>, Comparable<Collection<?>> { // todo: refactor it to make generic and provide a default impl of compareTo
-
         @Override
         default int compareTo(Collection<?> collection) {
-            int val = 0;
-            Iterator<E> iterator = (Iterator<E>) collection.iterator();
-
-            while (iterator.hasNext()) {
-                int size1 = Iterators.size(iterator);
-                int size2 = Iterators.size((Iterator<?>) iterator.next());
-                 val = Integer.compare(size1, size2);
-            }
-            return val;
+            return Integer.compare(size(), collection.size());
         }
 
     }
@@ -180,7 +171,7 @@ public class CrazyGenerics {
          */
         public static boolean hasNewEntities(Collection<? extends BaseEntity> entities) {
             for (BaseEntity entity : entities) {
-                if (entity == null) {
+                if (entity.getUuid() == null) {
                     return true;
                 }
             }
